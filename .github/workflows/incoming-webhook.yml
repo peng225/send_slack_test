@@ -28,7 +28,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "This is a test. Merge was pushed to ${BRANCH_NAME} branch. ${ github.event.head_commit.url }"
+                    "text": "This is a test. Merge was pushed to ${{ BRANCH_NAME }} branch. ${{ github.event.head_commit.url }}"
                   }
                 },
                 {
