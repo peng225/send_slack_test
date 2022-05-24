@@ -28,7 +28,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "This is a test. Merge was pushed to ${{ BRANCH_NAME }} branch. ${{ github.event.head_commit.url }}"
+                    "text": "This is a test. Merge was pushed to ${{ steps.extract_branch.outputs.branch }} branch. ${{ github.event.head_commit.url }}"
                   }
                 },
                 {
@@ -45,5 +45,4 @@ jobs:
         env:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
-          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
 
