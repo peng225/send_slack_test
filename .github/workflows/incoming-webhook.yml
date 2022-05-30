@@ -10,6 +10,16 @@ jobs:
     steps:
       # Check out theis repo
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v21
+        with:
+          sha: "HEAD^"
+          files: |
+            rook/*
 
       - name: Extract branch name
         shell: bash
@@ -20,6 +30,7 @@ jobs:
       # https://github.com/slackapi/slack-github-action
       - name: Send GitHub Action trigger data to Slack workflow
         id: slack
+        if: contains(steps.changed-files.outputs.any_modified)
         uses: slackapi/slack-github-action@v1.16.0
         with:
           payload: |
@@ -47,4 +58,3 @@ jobs:
         env:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_INCOMING_WEBHOOK_URL }}
-
