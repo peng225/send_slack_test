@@ -17,7 +17,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v21
         with:
-          sha: "HEAD^"
+          sha: "HEAD"
           files: |
             rook/*
 
@@ -30,7 +30,7 @@ jobs:
       # https://github.com/slackapi/slack-github-action
       - name: Send GitHub Action trigger data to Slack workflow
         id: slack
-        if: contains(steps.changed-files.outputs.any_modified)
+        if: steps.changed-files.outputs.any_modified == 'true'
         uses: slackapi/slack-github-action@v1.16.0
         with:
           payload: |
