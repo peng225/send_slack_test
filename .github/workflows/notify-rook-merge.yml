@@ -4,8 +4,9 @@ on:
     branches:
       - stage
       - release
+      - update
 jobs:
-  build:
+  notify:
     runs-on: ubuntu-latest
     steps:
       # Check out theis repo
@@ -15,16 +16,11 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v21
+        uses: tj-actions/changed-files@v23
         with:
           sha: "HEAD"
           files: |
             rook/*
-
-      - name: Extract branch name
-        shell: bash
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
-        id: extract_branch
 
       # Start a Slack workflow using a webhook trigger
       # https://github.com/slackapi/slack-github-action
@@ -35,13 +31,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "This is a test. Commits were pushed to ${{ steps.extract_branch.outputs.branch }} branch. ${{ github.event.head_commit.url }}",
+              "text": "This is a test. Commits were pushed to ${{ github.ref_name }} branch. ${{ github.event.head_commit.url }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "This is a test. Commits were pushed to ${{ steps.extract_branch.outputs.branch }} branch. ${{ github.event.head_commit.url }}"
+                    "text": "This is a test. Commits were pushed to ${{ github.ref_name }} branch. ${{ github.event.head_commit.url }}"
                   }
                 },
                 {
